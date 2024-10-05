@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ 'bg-color-one-dark': isDark }" class="h-screen">
+  <div :class="{ 'bg-color-one-dark': isDark }" class="h-screen bg-color-two-light">
     <RouterView/>
   </div>
 </template>
