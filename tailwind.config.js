@@ -14,6 +14,8 @@ export default {
         'color-three-light': '#f4f6ff',
         'color-four-light': '#635dc8',
         'color-five': '#a3a3a3',
+        'color-six': '#686d7b',
+        'color-seven': '#21212d',
       }
     },
   },

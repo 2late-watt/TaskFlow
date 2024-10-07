@@ -1,13 +1,16 @@
 <template>
-  <div :class="{ 'bg-color-one-dark': isDark }" class="h-screen bg-color-two-light">
+  <div :class="bgClass" class="h-screen">
     <RouterView/>
   </div>
 </template>
 
 <script lang="ts" setup>
 import {useDark} from "@vueuse/core";
+import {computed} from "vue";
 
 const isDark = useDark();
+
+const bgClass = computed(() => (isDark.value ? 'bg-color-two-dark' : 'bg-color-two-light'));
 </script>
 
 <style scoped>

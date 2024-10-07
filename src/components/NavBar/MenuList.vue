@@ -1,42 +1,54 @@
+<template>
+  <header>
+    <div :class="textClass" class="hover:scale-110 md:hidden" @click="toggleMenu">
+      <Icons name="burger"/>
+    </div>
+
+    <transition name="fade">
+      <nav v-if="isMenuOpen" class="fixed inset-0 z-50">
+        <div
+            class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm"
+            @click="toggleMenu"
+        ></div>
+
+        <div
+            :class="menuClass"
+            class="border absolute top-0 bottom-0 left-0 w-[70vw] shadow-lg transition-transform duration-500 ease-in-out transform"
+        >
+          <header class="flex items-center justify-between p-4">
+            <Logo/>
+          </header>
+          <main class="pr-5">
+            <Boards :closeMenu="toggleMenu"/>
+          </main>
+        </div>
+      </nav>
+    </transition>
+  </header>
+</template>
+
 <script lang="ts" setup>
-import { ref } from 'vue';
+import {ref, computed} from 'vue';
 import Icons from "@/components/icons/Icons.vue";
 import Logo from "@/components/Logo/logo.vue";
+import Boards from "@/components/Boards/boards.vue";
+import {useDark, useToggle} from "@vueuse/core";
 
 const isMenuOpen = ref(false);
+const isDark = useDark();
+const toggleDarkMode = useToggle(isDark);
 
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
 };
+
+const textClass = computed(() => (isDark.value ? 'text-white' : 'text-color-six'));
+const menuClass = computed(() => {
+  return {
+    'translate-x-0': isMenuOpen.value,
+    '-translate-x-full': !isMenuOpen.value,
+    'bg-color-one-dark': isDark.value,
+    'bg-color-one-light': !isDark.value,
+  };
+});
 </script>
-
-<template>
-  <div class="hover:scale-110 md:hidden" @click="toggleMenu">
-    <Icons name="burger"/>
-  </div>
-
-  <transition name="fade">
-    <nav v-if="isMenuOpen" class="fixed inset-0 z-50">
-      <div
-          class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm"
-          @click="toggleMenu"
-      ></div>
-
-      <div
-          :class="{ 'translate-x-0': isMenuOpen, '-translate-x-full': !isMenuOpen }"
-          class="bg-color-one-light border absolute top-0 bottom-0 left-[-1rem] w-[80vw] shadow-lg transition-transform duration-500 ease-in-out transform"
-      >
-        <header class="flex items-center justify-between p-4 border">
-          <Logo/>
-          <button class="hover:scale-110 md:hidden hover:text-color-five" @click="toggleMenu" aria-label="Fermer le menu">
-            <Icons name="close"/>
-          </button>
-        </header>
-      </div>
-    </nav>
-  </transition>
-</template>
-
-<style scoped>
-
-</style>
