@@ -19,7 +19,7 @@
             <Logo/>
           </header>
           <main class="pr-5">
-            <Boards :closeMenu="toggleMenu"/>
+            <Boards @closeMenu="toggleMenu"/>
           </main>
         </div>
       </nav>

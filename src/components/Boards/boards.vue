@@ -17,12 +17,12 @@
       </ul>
       <div
           class="flex items-center space-x-5 px-4 py-2 border-t-2 border-transparent text-color-four-light font-bold rounded-r-full hover:bg-color-four-light hover:text-white"
-          @click="closeMenu">
+          @click="toggleCreateForm">
         <Icons name="board"/>
-        <p class="flex items-center space-x-2">
+        <button class="flex items-center space-x-2">
           <Icons name="plus"/>
           <span class="capitalize font-bold">Create new board</span>
-        </p>
+        </button>
       </div>
     </section>
 
@@ -36,14 +36,28 @@
         </div>
       </div>
       <div class="flex items-center justify-center">
-        <button class="flex items-center space-x-2 w-[80%] mx-auto hover:bg-color-four-light hover:text-white p-2 rounded-lg"
-                @click="closeMenu">
+        <button
+            class="flex items-center space-x-2 w-[80%] mx-auto hover:bg-color-four-light hover:text-white p-2 rounded-lg"
+            @click="closeMenu">
           <Icons name="eye"/>
           <span class="capitalize font-bold">Hide sidebar</span>
         </button>
       </div>
     </section>
   </main>
+
+  <!-- Formulaire de création -->
+  <Dialog v-model:visible="showForm" :style="{ width: '90%' }" header="Create New Board" modal>
+    <span class="text-surface-500 dark:text-surface-400 block mb-8">Enter the details for the new board.</span>
+    <div class="flex items-center gap-4 mb-4">
+      <label class="font-semibold w-24" for="boardName">Board Name</label>
+      <InputText id="boardName" autocomplete="off" class="flex-auto"/>
+    </div>
+    <div class="flex justify-end gap-2">
+      <Button label="Cancel" class="custom-primevue-cancel-button" severity="secondary" type="button" @click="showForm = false"></Button>
+      <Button label="Create" class="custom-primevue-create-button" type="button" @click="createBoard"></Button>
+    </div>
+  </Dialog>
 </template>
 
 <script lang="ts" setup>
@@ -52,6 +66,8 @@ import {useDark, useToggle} from "@vueuse/core";
 import Button from 'primevue/button';
 import Icons from "@/components/icons/Icons.vue";
 import ToggleSwitch from 'primevue/toggleswitch';
+import Dialog from "primevue/dialog";
+import InputText from 'primevue/inputtext';
 
 const boardNumber = ref(8);
 const boards = ref([
@@ -67,12 +83,10 @@ const boards = ref([
 const isDark = useDark();
 const toggleDarkMode = useToggle(isDark);
 const checked = ref(isDark);
-const props = defineProps({
-  closeMenu: {
-    type: Function,
-    required: true,
-  },
-});
+const showForm = ref(false);
+const visible = ref(false);
+
+const emit = defineEmits(['closeMenu'])
 
 // Watcher pour changer le mode sombre
 watch(checked, (newValue) => {
@@ -85,6 +99,36 @@ const mainClass = computed(() => (isDark.value ? 'text-white text-opacity-70' : 
 const boardClass = computed(() => (isDark.value ? 'text-white text-opacity-70' : 'text-color-six'));
 
 const closeMenu = () => {
-  props.closeMenu();
+  emit('closeMenu');
+}
+
+const toggleCreateForm = () => {
+  showForm.value = !showForm.value;
+}
+
+const createBoard = () => {
+  // Logic to create a new board
+  showForm.value = false;
 }
 </script>
+
+<style scoped>
+.custom-primevue-create-button {
+  color: white;
+  font-weight: bold;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.custom-primevue-cancel-button {
+  background-color: red;
+  opacity: 0.6;
+  color: white;
+  font-weight: bold;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.custom-primevue-create-button:hover {
+  background-color: #635dc8;
+  color: white;
+}
+</style>
