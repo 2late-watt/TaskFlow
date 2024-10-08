@@ -16,6 +16,8 @@ export default {
         'color-five': '#a3a3a3',
         'color-six': '#686d7b',
         'color-seven': '#21212d',
+        'color-red': 'rgba(241,18,40,0.53)',
+        'color-green': 'rgb(70,227,56)',
       }
     },
   },
