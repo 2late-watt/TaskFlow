@@ -47,7 +47,7 @@
   </main>
 
   <!-- Formulaire de création -->
-  <Dialog v-model:visible="showForm" :style="{ width: '90%' }" header="Create New Board" modal>
+  <Dialog v-model:visible="showForm"  header="Create New Board" modal>
     <span class="text-surface-500 dark:text-surface-400 block mb-8">Enter the details for the new board.</span>
     <div class="flex items-center gap-4 mb-4">
       <label class="font-semibold w-full" for="boardName">Board Name</label>
@@ -143,8 +143,4 @@ const createBoard = () => {
   transition: background-color 0.3s, color 0.3s;
 }
 
-.custom-primevue-create-button:hover {
-  background-color: #635dc8;
-  color: white;
-}
 </style>

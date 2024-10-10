@@ -1,30 +1,31 @@
 <template>
-  <header>
-    <div :class="textClass" class="hover:scale-110 md:hidden" @click="toggleMenu">
-      <Icons name="burger"/>
-    </div>
+  <div class="container mx-auto relative">
+    <header class="flex justify-between items-center p-4">
+      <div :class="textClass" class="hover:scale-110 cursor-pointer" @click="toggleMenu">
+        <Icons name="burger"/>
+      </div>
 
-    <transition name="fade">
-      <nav v-if="isMenuOpen" class="fixed inset-0 z-50">
-        <div
-            class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm"
-            @click="toggleMenu"
-        ></div>
-
-        <div
-            :class="menuClass"
-            class="border absolute top-0 bottom-0 left-0 w-[70vw] shadow-lg transition-transform duration-500 ease-in-out transform"
-        >
-          <header class="flex items-center justify-between p-4">
-            <Logo/>
-          </header>
-          <main class="pr-5">
-            <Boards @closeMenu="toggleMenu"/>
-          </main>
-        </div>
-      </nav>
-    </transition>
-  </header>
+      <transition name="fade">
+        <nav v-if="isMenuOpen" class="fixed inset-0 z-50">
+          <div
+              class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm"
+              @click="toggleMenu"
+          ></div>
+          <div
+              :class="menuClass"
+              class="border absolute top-0 bottom-0 left-0 w-[70vw] md:w-[20vw] shadow-lg transition-transform duration-500 ease-in-out transform"
+          >
+            <header class="flex items-center justify-between p-4">
+              <Logo/>
+            </header>
+            <main class="pr-5">
+              <Boards @closeMenu="toggleMenu"/>
+            </main>
+          </div>
+        </nav>
+      </transition>
+    </header>
+  </div>
 </template>
 
 <script lang="ts" setup>
