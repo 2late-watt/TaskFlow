@@ -13,7 +13,7 @@
           ></div>
           <div
               :class="menuClass"
-              class="border absolute top-0 bottom-0 left-0 w-[70vw] md:w-[20vw] shadow-lg transition-transform duration-500 ease-in-out transform"
+              class="border absolute top-0 bottom-0 left-0 w-[70vw] md:w-[30vw] lg:w-[20vw] xl:w-[15vw] shadow-lg transition-transform duration-500 ease-in-out transform"
           >
             <header class="flex items-center justify-between p-4">
               <Logo/>
