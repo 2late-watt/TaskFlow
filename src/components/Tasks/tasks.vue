@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto p-6">
-    <div class="hidden lg:block">
+    <div class="hidden lg:block xl:max-w-[80%] mx-auto">
       <div class="flex items-center space-x-5">
         <div :class="tasksColor" class="border-2 border-transparent rounded-lg w-full sm:w-1/3 h-[80vh] p-4">
           <h1 class="font-bold mb-4 flex items-center space-x-2">
@@ -46,22 +46,22 @@
     <div class="card h-[80vh] lg:hidden">
       <Tabs v-model:value="value" :class="taskColor">
         <TabList>
-          <Tab class="uppercase font-bold" value="0">
+          <Tab value="0">
             <div class="flex items-center space-x-2">
               <span class="w-4 h-4 border border-transparent rounded-full bg-color-todo"></span>
-              <span>Todo ({{ filteredTasks('Todo').length }})</span>
+              <span class="uppercase font-bold">Todo ({{ filteredTasks('Todo').length }})</span>
             </div>
           </Tab>
-          <Tab class="uppercase font-bold" value="1">
+          <Tab value="1">
             <div class="flex items-center space-x-2">
               <span class="w-4 h-4 border border-transparent rounded-full bg-color-doing"></span>
-              <span>Doing ({{ filteredTasks('Doing').length }})</span>
+              <span class="uppercase font-bold">Doing ({{ filteredTasks('Doing').length }})</span>
             </div>
           </Tab>
-          <Tab class="uppercase font-bold" value="2">
+          <Tab value="2">
             <div class="flex items-center space-x-2">
               <span class="w-4 h-4 border border-transparent rounded-full bg-color-done"></span>
-              <span>Done ({{ filteredTasks('Done').length }})</span>
+              <span class="uppercase font-bold">Done ({{ filteredTasks('Done').length }})</span>
             </div>
           </Tab>
         </TabList>

@@ -2,15 +2,15 @@
   <div class="container mx-auto">
     <header :class="headerClass" class="flex items-center justify-between p-4 shadow-sm">
       <div class="flex items-center space-x-4">
-        <MenuList />
-        <Logo />
+        <MenuList/>
+        <Logo/>
       </div>
       <div>
         <button
             class="flex items-center space-x-2 bg-color-four-light hover:bg-opacity-90 py-2 px-4 text-white border-2 border-transparent rounded-full"
             @click="openCreateForm"
         >
-          <Icons name="plus" />
+          <Icons name="plus"/>
           <span class="text-md hidden md:block">Add New Task</span>
         </button>
       </div>
@@ -43,8 +43,8 @@
               v-model="form.description"
               autoResize
               class="flex-auto w-full border rounded-lg resize-none p-2"
-              rows="4"
               placeholder="Description de la tâche"
+              rows="4"
           />
         </div>
         <div class="flex flex-col items-center space-y-2 mb-4">
@@ -69,11 +69,11 @@
 </template>
 
 <script lang="ts" setup>
-import { useDark } from "@vueuse/core";
+import {useDark} from "@vueuse/core";
 import Logo from "@/components/Logo/logo.vue";
 import MenuList from "@/components/NavBar/MenuList.vue";
 import Icons from "@/components/icons/Icons.vue";
-import { computed, ref } from "vue";
+import {computed, ref} from "vue";
 import Dialog from "primevue/dialog";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
@@ -92,9 +92,9 @@ const form = ref({
 });
 const selectedStatus = ref();
 const statusOptions = ref([
-  { name: 'Todo', code: 'Td' },
-  { name: 'Doing', code: 'Dg' },
-  { name: 'Done', code: 'Dn' },
+  {name: 'Todo', code: 'Td'},
+  {name: 'Doing', code: 'Dg'},
+  {name: 'Done', code: 'Dn'},
 ]);
 
 const openCreateForm = () => {
@@ -104,7 +104,7 @@ const openCreateForm = () => {
 const createTask = () => {
   if (form.value.name) {
     // Logique pour créer une tâche
-    console.log('Task Created:', { ...form.value, status: selectedStatus.value });
+    console.log('Task Created:', {...form.value, status: selectedStatus.value});
     resetForm();
     showForm.value = false;
   }
