@@ -18,6 +18,9 @@ export default {
         'color-seven': '#21212d',
         'color-red': 'rgba(241,18,40,0.53)',
         'color-green': 'rgb(70,227,56)',
+        'color-todo': 'rgb(7,208,243)',
+        'color-doing': 'rgb(116,67,239)',
+        'color-done': 'rgb(44,213,106)',
       }
     },
   },

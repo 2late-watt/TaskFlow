@@ -1,3 +1,104 @@
+<template>
+  <div class="container mx-auto p-6">
+    <div class="hidden lg:block">
+      <div class="flex items-center space-x-5">
+        <div :class="tasksColor" class="border-2 border-transparent rounded-lg w-full sm:w-1/3 h-[80vh] p-4">
+          <h1 class="font-bold mb-4 flex items-center space-x-2">
+            <span class="w-4 h-4 border border-transparent rounded-full bg-color-todo"></span>
+            <span>Todo ({{ filteredTasks('Todo').length }})</span>
+          </h1>
+          <div class="grid grid-cols-1 gap-4">
+            <div v-for="task in filteredTasks('Todo')" :key="task.id" :class="taskColor"
+                 class="border-2 border-transparent rounded-md shadow-md p-3 flex flex-col justify-between">
+              <h2 class="font-bold mb-2 text-sm">{{ task.title }}</h2>
+              <p class="font-semibold text-[0.80rem]">{{ truncate(task.description, 100) }}</p>
+            </div>
+          </div>
+        </div>
+        <div :class="tasksColor" class="border-2 border-transparent rounded-lg w-full sm:w-1/3 h-[80vh] p-4">
+          <h1 class="font-bold mb-4 flex items-center space-x-2">
+            <span class="w-4 h-4 border border-transparent rounded-full bg-color-doing"></span>
+            <span>Doing ({{ filteredTasks('Doing').length }})</span>
+          </h1>
+          <div class="grid grid-cols-1 gap-4">
+            <div v-for="task in filteredTasks('Doing')" :key="task.id" :class="taskColor"
+                 class="border-2 border-transparent rounded-md shadow-md p-3 flex flex-col justify-between">
+              <h2 class="font-bold mb-2 text-sm">{{ task.title }}</h2>
+              <p class="font-semibold text-[0.80rem]">{{ truncate(task.description, 100) }}</p>
+            </div>
+          </div>
+        </div>
+        <div :class="tasksColor" class="border-2 border-transparent rounded-lg w-full sm:w-1/3 h-[80vh] p-4">
+          <h1 class="font-bold mb-4 flex items-center space-x-2">
+            <span class="w-4 h-4 border border-transparent rounded-full bg-color-done"></span>
+            <span>Done ({{ filteredTasks('Done').length }})</span>
+          </h1>
+          <div class="grid grid-cols-1 gap-4">
+            <div v-for="task in filteredTasks('Done')" :key="task.id" :class="taskColor"
+                 class="border-2 border-transparent rounded-md shadow-md p-3 flex flex-col justify-between">
+              <h2 class="font-bold mb-2 text-sm">{{ task.title }}</h2>
+              <p class="font-semibold text-[0.80rem]">{{ truncate(task.description, 100) }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card h-[80vh] lg:hidden">
+      <Tabs v-model:value="value" :class="taskColor">
+        <TabList>
+          <Tab class="uppercase font-bold" value="0">
+            <div class="flex items-center space-x-2">
+              <span class="w-4 h-4 border border-transparent rounded-full bg-color-todo"></span>
+              <span>Todo ({{ filteredTasks('Todo').length }})</span>
+            </div>
+          </Tab>
+          <Tab class="uppercase font-bold" value="1">
+            <div class="flex items-center space-x-2">
+              <span class="w-4 h-4 border border-transparent rounded-full bg-color-doing"></span>
+              <span>Doing ({{ filteredTasks('Doing').length }})</span>
+            </div>
+          </Tab>
+          <Tab class="uppercase font-bold" value="2">
+            <div class="flex items-center space-x-2">
+              <span class="w-4 h-4 border border-transparent rounded-full bg-color-done"></span>
+              <span>Done ({{ filteredTasks('Done').length }})</span>
+            </div>
+          </Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel class="h-[65vh] overflow-y-auto" value="0">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div v-for="task in filteredTasks('Todo')" :key="task.id" :class="taskColor"
+                   class="border-2 border-transparent rounded-md shadow-md p-3">
+                <h2 class="font-bold mb-2 text-sm">{{ task.title }}</h2>
+                <p class="font-semibold text-[0.80rem]">{{ truncate(task.description, 50) }}</p>
+              </div>
+            </div>
+          </TabPanel>
+          <TabPanel class="h-[65vh] overflow-y-auto" value="1">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div v-for="task in filteredTasks('Doing')" :key="task.id" :class="taskColor"
+                   class="border-2 border-transparent rounded-md shadow-md p-3">
+                <h2 class="font-bold mb-2 text-sm">{{ task.title }}</h2>
+                <p class="font-semibold text-[0.80rem]">{{ truncate(task.description, 50) }}</p>
+              </div>
+            </div>
+          </TabPanel>
+          <TabPanel class="h-[65vh] overflow-y-auto" value="2">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div v-for="task in filteredTasks('Done')" :key="task.id" :class="taskColor"
+                   class="border-2 border-transparent rounded-md shadow-md p-3">
+                <h2 class="font-bold mb-2 text-sm">{{ task.title }}</h2>
+                <p class="font-semibold text-[0.80rem]">{{ truncate(task.description, 50) }}</p>
+              </div>
+            </div>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+    </div>
+  </div>
+</template>
+
 <script lang="ts" setup>
 import Tabs from 'primevue/tabs';
 import TabList from 'primevue/tablist';
@@ -66,7 +167,7 @@ const tasks = ref([
     status: 'Done'
   },
   {
-    id: 9,
+    id: 10,
     title: 'Préparer la présentation',
     description: "Créer une présentation pour le comité de direction sur l'état du projet.",
     status: 'Todo'
@@ -82,64 +183,9 @@ const truncate = (text: string, length: number) => {
 };
 
 const taskColor = computed(() => (isDark.value ? 'bg-color-two-dark text-white text-opacity-85' : 'bg-color-two-light'));
+const tasksColor = computed(() => (isDark.value ? 'bg-color-one-dark text-white text-opacity-85' : 'bg-color-one-light'));
 </script>
 
-<template>
-  <div class="container mx-auto p-6">
-    <!--    <div class="flex items-center bg-blue-400 space-x-5">-->
-    <!--      <div class="bg-green-400 w-1/3 h-[80vh]">-->
-    <!--        1-->
-    <!--      </div>-->
-    <!--      <div class="bg-yellow-400 w-1/3 h-[80vh]">-->
-    <!--        2-->
-    <!--      </div>-->
-    <!--      <div class="bg-red-400 w-1/3 h-[80vh]">-->
-    <!--        3-->
-    <!--      </div>-->
-    <!--    </div>-->
-    <div class="card h-[80vh] lg:hidden">
-      <Tabs v-model:value="value" :class="taskColor">
-        <TabList>
-          <Tab class="uppercase font-bold" value="0">Todo ({{ filteredTasks('Todo').length }})</Tab>
-          <Tab class="uppercase font-bold" value="1">Doing ({{ filteredTasks('Doing').length }})</Tab>
-          <Tab class="uppercase font-bold" value="2">Done ({{ filteredTasks('Done').length }})</Tab>
-        </TabList>
-        <TabPanels>
-          <TabPanel class="h-[65vh] overflow-y-auto" value="0">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              <div v-for="task in filteredTasks('Todo')" :key="task.id" :class="taskColor"
-                   class="border-2 border-transparent rounded-md shadow-md p-3">
-                <h2 class="font-bold mb-2 text-sm">{{ task.title }}</h2>
-                <p class="font-semibold text-[0.80rem]">{{ truncate(task.description, 50) }}</p>
-              </div>
-            </div>
-          </TabPanel>
-
-          <TabPanel class="h-[65vh] overflow-y-auto" value="1">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              <div v-for="task in filteredTasks('Doing')" :key="task.id" :class="taskColor"
-                   class="border-2 border-transparent rounded-md shadow-md p-3">
-                <h2 class="font-bold mb-2 text-sm">{{ task.title }}</h2>
-                <p class="font-semibold text-[0.80rem]">{{ truncate(task.description, 50) }}</p>
-              </div>
-            </div>
-          </TabPanel>
-
-          <TabPanel class="h-[65vh] overflow-y-auto" value="2">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              <div v-for="task in filteredTasks('Done')" :key="task.id" :class="taskColor"
-                   class="border-2 border-transparent rounded-md shadow-md p-3">
-                <h2 class="font-bold mb-2 text-sm">{{ task.title }}</h2>
-                <p class="font-semibold text-[0.80rem]">{{ truncate(task.description, 50) }}</p>
-              </div>
-            </div>
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-    </div>
-  </div>
-</template>
-
 <style scoped>
-
+/* Ajoutez vos styles personnalisés ici si nécessaire */
 </style>
