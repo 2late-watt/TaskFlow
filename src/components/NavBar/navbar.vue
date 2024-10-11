@@ -18,7 +18,7 @@
 
     <Dialog
         v-model:visible="showForm"
-        class="md:w-[60%] lg:w-[40%] xl:w-[30%]"
+        class=" w-[90%] md:w-[50%] lg:w-[40%] xl:w-[30%]"
         header="Create New Task"
         modal
     >
