@@ -73,11 +73,11 @@ const tasks = ref([
   },
 ]);
 
-const filteredTasks = (status) => {
+const filteredTasks = (status: string) => {
   return tasks.value.filter(task => task.status === status);
 };
 
-const truncate = (text, length) => {
+const truncate = (text: string, length: number) => {
   return text.length > length ? text.substring(0, length) + '...' : text;
 };
 
