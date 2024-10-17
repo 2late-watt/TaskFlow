@@ -69,21 +69,22 @@
 </template>
 
 <script lang="ts" setup>
-import {useDark} from "@vueuse/core";
+import {useDark, useStorage} from "@vueuse/core";
 import Logo from "@/components/Logo/logo.vue";
 import MenuList from "@/components/NavBar/MenuList.vue";
 import Icons from "@/components/icons/Icons.vue";
-import {computed, ref} from "vue";
+import {computed, ref, onMounted} from "vue";
 import Dialog from "primevue/dialog";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
 import Select from "primevue/select";
 import Textarea from "primevue/textarea";
 
+// Mode sombre/clair
 const isDark = useDark();
-
 const headerClass = computed(() => (isDark.value ? 'bg-color-one-dark' : 'bg-color-one-light'));
 
+// États du formulaire et de la boîte de dialogue
 const showForm = ref(false);
 const form = ref({
   name: '',
@@ -97,26 +98,60 @@ const statusOptions = ref([
   {name: 'Done', code: 'Dn'},
 ]);
 
+// Initialiser le tableau des tâches à partir du local storage
+const tasks = ref([]);
+const TASKS_KEY = 'tasks';
+
+// Fonction pour ouvrir le formulaire de création
 const openCreateForm = () => {
   showForm.value = true;
 };
 
+// Fonction pour créer une tâche et la sauvegarder dans le local storage
 const createTask = () => {
   if (form.value.name) {
-    // Logique pour créer une tâche
-    console.log('Task Created:', {...form.value, status: selectedStatus.value});
+    const newTask = {
+      name: form.value.name,
+      description: form.value.description,
+      status: selectedStatus.value,
+    };
+
+    // Ajouter la nouvelle tâche au tableau et sauvegarder dans le local storage
+    tasks.value.push(newTask);
+    saveTasksToLocalStorage();
+
     resetForm();
     showForm.value = false;
   }
 };
 
+// Sauvegarder le tableau des tâches dans le local storage
+const saveTasksToLocalStorage = () => {
+  localStorage.setItem(TASKS_KEY, JSON.stringify(tasks.value));
+};
+
+// Récupérer les tâches depuis le local storage
+const loadTasksFromLocalStorage = () => {
+  const storedTasks = localStorage.getItem(TASKS_KEY);
+  if (storedTasks) {
+    tasks.value = JSON.parse(storedTasks);
+  }
+};
+
+// Réinitialiser le formulaire
 const resetForm = () => {
   form.value.name = '';
   form.value.description = '';
   form.value.status = '';
   selectedStatus.value = null;
 };
+
+// Charger les tâches lorsqu'on monte le composant
+onMounted(() => {
+  loadTasksFromLocalStorage();
+});
 </script>
+
 
 <style scoped>
 .custom-primevue-create-button {

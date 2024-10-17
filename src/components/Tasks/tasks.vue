@@ -45,7 +45,7 @@
     </div>
     <div class="card h-[80vh] lg:hidden">
       <Tabs v-model:value="value" :class="taskColor">
-        <TabList>
+        <TabList class="overflow-x-auto">
           <Tab value="0">
             <div class="flex items-center space-x-2">
               <span class="w-4 h-4 border border-transparent rounded-full bg-color-todo"></span>
@@ -105,87 +105,51 @@ import TabList from 'primevue/tablist';
 import Tab from 'primevue/tab';
 import TabPanels from 'primevue/tabpanels';
 import TabPanel from 'primevue/tabpanel';
-import {computed, ref} from 'vue';
+import {computed, ref, onMounted, watch} from 'vue';
 import {useDark} from "@vueuse/core";
 
 const value = ref('0');
 const isDark = useDark();
 
-const tasks = ref([
-  {
-    id: 1,
-    title: 'Rédiger le rapport de projet',
-    description: "Préparer un rapport détaillé sur l'avancement du projet pour la réunion de la semaine prochaine.",
-    status: 'Todo'
-  },
-  {
-    id: 2,
-    title: 'Développer la fonctionnalité de recherche',
-    description: "Implémenter la fonctionnalité de recherche dans l'application pour améliorer l'expérience utilisateur.",
-    status: 'Doing'
-  },
-  {
-    id: 3,
-    title: 'Tester l’application',
-    description: "Effectuer des tests sur l'application pour identifier et corriger les bugs avant le lancement.",
-    status: 'Done'
-  },
-  {
-    id: 4,
-    title: 'Mettre à jour la documentation',
-    description: "Réviser et mettre à jour la documentation technique pour refléter les derniers changements.",
-    status: 'Todo'
-  },
-  {
-    id: 5,
-    title: 'Organiser la réunion d’équipe',
-    description: "Planifier et organiser une réunion d'équipe pour discuter des progrès et des défis.",
-    status: 'Doing'
-  },
-  {
-    id: 6,
-    title: 'Déployer la mise à jour',
-    description: "Déployer la dernière mise à jour de l'application sur le serveur de production.",
-    status: 'Done'
-  },
-  {
-    id: 7,
-    title: 'Créer des maquettes',
-    description: "Concevoir des maquettes pour la nouvelle interface utilisateur de l'application.",
-    status: 'Todo'
-  },
-  {
-    id: 8,
-    title: 'Analyser les retours utilisateurs',
-    description: "Examiner les retours des utilisateurs pour identifier les améliorations possibles.",
-    status: 'Doing'
-  },
-  {
-    id: 9,
-    title: 'Préparer la présentation',
-    description: "Créer une présentation pour le comité de direction sur l'état du projet.",
-    status: 'Done'
-  },
-  {
-    id: 10,
-    title: 'Préparer la présentation',
-    description: "Créer une présentation pour le comité de direction sur l'état du projet.",
-    status: 'Todo'
-  },
-]);
+const tasks = ref<any[]>([]);
 
+// Fonction pour charger les tâches depuis le localStorage
+const loadTasksFromLocalStorage = () => {
+  const storedTasks = localStorage.getItem('tasks');
+  console.log("tasks", storedTasks);
+  if (storedTasks) {
+    tasks.value = JSON.parse(storedTasks);
+  }
+};
+
+// Fonction pour sauvegarder les tâches dans le localStorage
+const saveTasksToLocalStorage = () => {
+  localStorage.setItem('tasks', JSON.stringify(tasks.value));
+};
+
+// Charger les tâches lors du montage du composant
+onMounted(() => {
+  loadTasksFromLocalStorage();
+});
+
+// Watcher pour sauvegarder les tâches à chaque modification
+watch(tasks, () => {
+  saveTasksToLocalStorage();
+}, { deep: true });
+
+// Méthodes pour filtrer et tronquer les tâches
 const filteredTasks = (status: string) => {
-  return tasks.value.filter(task => task.status === status);
+  return tasks.value.filter(task => task.status.name === status);
 };
 
 const truncate = (text: string, length: number) => {
   return text.length > length ? text.substring(0, length) + '...' : text;
 };
 
+// Couleurs des tâches
 const taskColor = computed(() => (isDark.value ? 'bg-color-two-dark text-white text-opacity-85' : 'bg-color-two-light'));
 const tasksColor = computed(() => (isDark.value ? 'bg-color-one-dark text-white text-opacity-85' : 'bg-color-one-light'));
 </script>
 
 <style scoped>
-/* Ajoutez vos styles personnalisés ici si nécessaire */
 </style>

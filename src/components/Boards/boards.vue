@@ -69,7 +69,7 @@
 </template>
 
 <script lang="ts" setup>
-import {ref, watch, computed} from "vue";
+import {ref, watch, computed, onMounted} from "vue";
 import {useDark, useToggle} from "@vueuse/core";
 import Button from 'primevue/button';
 import Icons from "@/components/icons/Icons.vue";
@@ -78,12 +78,10 @@ import Dialog from "primevue/dialog";
 import InputText from 'primevue/inputtext';
 import ColorPicker from 'primevue/colorpicker';
 
-const boards = ref([
-  {title: 'Board 1', id: 1, color: '#007bff', cards: []},
-  {title: 'Board 2', id: 2, color: '#6610f2', cards: []},
-  {title: 'Board 3', id: 3, color: '#dc3545', cards: []},
-]);
+const BOARDS_KEY = 'boards'; // Clé pour le local storage
 
+// Initialiser les boards depuis le local storage
+const boards = ref([]);
 const isDark = useDark();
 const toggleDarkMode = useToggle(isDark);
 const checked = ref(isDark);
@@ -105,14 +103,30 @@ const headerClass = computed(() => (isDark.value ? 'text-white text-opacity-70' 
 const mainClass = computed(() => (isDark.value ? 'text-white text-opacity-70' : ''));
 const boardClass = computed(() => (isDark.value ? 'text-white text-opacity-70' : 'text-color-six'));
 
+// Charger les boards depuis le local storage
+const loadBoardsFromLocalStorage = () => {
+  const storedBoards = localStorage.getItem(BOARDS_KEY);
+  if (storedBoards) {
+    boards.value = JSON.parse(storedBoards);
+  }
+};
+
+// Sauvegarder les boards dans le local storage
+const saveBoardsToLocalStorage = () => {
+  localStorage.setItem(BOARDS_KEY, JSON.stringify(boards.value));
+};
+
+// Fermer le menu
 const closeMenu = () => {
   emit('closeMenu');
-}
+};
 
+// Ouvrir/fermer le formulaire de création
 const toggleCreateForm = () => {
   showForm.value = !showForm.value;
-}
+};
 
+// Créer un board et sauvegarder dans le local storage
 const createBoard = () => {
   if (form.value.name !== '') {
     boards.value.push({
@@ -121,12 +135,21 @@ const createBoard = () => {
       color: '#' + form.value.color,
       cards: []
     });
+    saveBoardsToLocalStorage(); // Sauvegarder les boards mis à jour
+
+    // Réinitialiser le formulaire
     form.value.name = '';
     form.value.color = '00ff2b';
   }
   showForm.value = false;
-}
+};
+
+// Charger les boards lors du montage du composant
+onMounted(() => {
+  loadBoardsFromLocalStorage();
+});
 </script>
+
 
 <style scoped>
 .custom-primevue-create-button {
