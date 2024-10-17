@@ -67,7 +67,6 @@
     </div>
   </Dialog>
 </template>
-
 <script lang="ts" setup>
 import {ref, watch, computed, onMounted} from "vue";
 import {useDark, useToggle} from "@vueuse/core";
@@ -78,10 +77,18 @@ import Dialog from "primevue/dialog";
 import InputText from 'primevue/inputtext';
 import ColorPicker from 'primevue/colorpicker';
 
+// Interface pour définir le type des éléments de Board
+interface Board {
+  id: number;
+  title: string;
+  color: string;
+  cards: any[];
+}
+
 const BOARDS_KEY = 'boards'; // Clé pour le local storage
 
 // Initialiser les boards depuis le local storage
-const boards = ref([]);
+const boards = ref<Board[]>([]); // Préciser que boards est un tableau de Board
 const isDark = useDark();
 const toggleDarkMode = useToggle(isDark);
 const checked = ref(isDark);
@@ -149,6 +156,7 @@ onMounted(() => {
   loadBoardsFromLocalStorage();
 });
 </script>
+
 
 
 <style scoped>

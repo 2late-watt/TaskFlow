@@ -80,6 +80,13 @@ import InputText from "primevue/inputtext";
 import Select from "primevue/select";
 import Textarea from "primevue/textarea";
 
+// Interface pour définir le type des éléments Task
+interface Task {
+  name: string;
+  description: string;
+  status: string;
+}
+
 // Mode sombre/clair
 const isDark = useDark();
 const headerClass = computed(() => (isDark.value ? 'bg-color-one-dark' : 'bg-color-one-light'));
@@ -99,7 +106,7 @@ const statusOptions = ref([
 ]);
 
 // Initialiser le tableau des tâches à partir du local storage
-const tasks = ref([]);
+const tasks = ref<Task[]>([]); // Préciser que tasks est un tableau de Task
 const TASKS_KEY = 'tasks';
 
 // Fonction pour ouvrir le formulaire de création
@@ -110,7 +117,7 @@ const openCreateForm = () => {
 // Fonction pour créer une tâche et la sauvegarder dans le local storage
 const createTask = () => {
   if (form.value.name) {
-    const newTask = {
+    const newTask: Task = {
       name: form.value.name,
       description: form.value.description,
       status: selectedStatus.value,
@@ -151,6 +158,7 @@ onMounted(() => {
   loadTasksFromLocalStorage();
 });
 </script>
+
 
 
 <style scoped>
